@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Валентинка</title>
+<link href="https://fonts.googleapis.com/css2?family=Borsok&display=swap" rel="stylesheet">
+<style>
+body {
+  margin:0;
+  font-family: 'Borsok', sans-serif;
+  height:100vh;
+  overflow:hidden;
+  background: url("val_bg.jpg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#800020; /* бордовий текст */
+}
+
+.screen {
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.active { display:flex; }
+
+h1 { font-size:26px; margin-bottom:10px; color:#800020; }
+
+button {
+  position:absolute;
+  padding:12px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  left:45%; 
+  top:72%; /* трохи нижче від гіфки */
+  transform:translate(-50%, -50%) scale(1);
+  background:#ff4d6d; 
+  color:white;
+  pointer-events:auto;
+  z-index:2;
+}
+
+#noBtn {
+  left:55%; 
+  top:72%; /* трохи нижче від гіфки */
+  transform:translate(-50%, -50%);
+  background:#aaa;
+  color:black;
+  z-index:1;
+}
+
+.envelope { width:200px; animation:pulse 1.2s infinite; cursor:pointer; }
+@keyframes pulse { 0%{transform:scale(1);} 50%{transform:scale(1.08);} 100%{transform:scale(1);} }
+
+.options {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
+}
+
+.option {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  animation: casinoGlow 1.4s infinite alternate;
+}
+
+.option img {
+  width:100px;
+  height:100px;
+  object-fit:contain;
+  border-radius:10px;
+  transition: all 0.4s ease;
+}
+
+.option-text { margin-top:6px; font-size:13px; text-align:center; color:#800020; }
+
+.gif { width:200px; margin-bottom:20px; cursor:pointer; }
+.arrow { width:70px; margin-top:15px; cursor:pointer; animation: arrowPulse 1.2s infinite alternate; }
+
+@keyframes casinoGlow {
+  0% { box-shadow: 0 0 0px #ff7aa2; transform: scale(1); }
+  50% { box-shadow: 0 0 15px #ff7aa2; transform: scale(1.05); }
+  100% { box-shadow: 0 0 0px #ff7aa2; transform: scale(1); }
+}
+
+@keyframes arrowPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+<body>
+
+<!-- Екран 1: Конверт -->
+<div class="screen active" id="screen1">
+  <h1>Тобі тут лист надійшов</h1>
+  <img src="envelope.png" class="envelope" onclick="openEnvelope()">
+</div>
+
+<!-- Екран 2: Питання -->
+<div class="screen" id="screen2">
+  <h1>Катю, Будеш Моєю Валентинкою?</h1>
+  <img src="question.gif" class="gif">
+  <button id="yesBtn">Так</button>
+  <button id="noBtn">Ні</button>
+</div>
+
+<!-- Екран 3: Ура -->
+<div class="screen" id="screen3">
+  <img src="yay.gif" class="gif">
+  <h1>Урааааа</h1>
+  <img src="arrow.png" class="arrow" onclick="nextOptions()">
+</div>
+
+<!-- Екран 4: Вибір -->
+<div class="screen" id="screen4">
+  <h1>Обирай що йде в наборі</h1>
+  <div class="options">
+    <div class="option" data-images="1a.png,1b.png,1c.png" onclick="chosen(this)">
+      <img src="1a.png"><div class="option-text">Plank till failure</div>
+    </div>
+    <div class="option" data-images="2a.png,2b.png,2c.png" onclick="chosen(this)">
+      <img src="2a.png"><div class="option-text">Масаж</div>
+    </div>
+    <div class="option" data-images="3a.png,3b.png,3c.png" onclick="chosen(this)">
+      <img src="3a.png"><div class="option-text">Сніданок у ліжко</div>
+    </div>
+    <div class="option" data-images="4a.png,4b.png,4c.png" onclick="chosen(this)">
+      <img src="4a.png"><div class="option-text">Весь день кажу тобі так</div>
+    </div>
+    <div class="option" data-images="5a.png,5b.png,5c.png" onclick="chosen(this)">
+      <img src="5a.png"><div class="option-text">Ти вчиш мене своєму гоббі</div>
+    </div>
+    <div class="option" data-images="6a.png,6b.png,6c.png" onclick="chosen(this)">
+      <img src="6a.png"><div class="option-text">Я читаю/дивлюсь щось на твій вибір</div>
+    </div>
+  </div>
+</div>
+
+<!-- Екран 5: Фінал -->
+<div class="screen" id="screen5">
+  <h1>Чудовий вибір, але сьогодні обирати не доведеться)))</h1>
+  <img src="final.png" class="gif">
+  <div style="margin-top:15px; font-size:20px; color:#800020;">Кохаю тебе, до зустрічі</div>
+</div>
+
+<script>
+let clickCount = 0;
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function openEnvelope(){ showScreen("screen2"); }
+
+// Натискання "Ні" – кнопка "Так" збільшується і витісняє "Ні"
+noBtn.addEventListener("click", ()=>{
+  clickCount++;
+  let scale = 1 + clickCount*0.7;
+  yesBtn.style.transform = `translate(-50%, -50%) scale(${scale})`;
+
+  const yesRect = yesBtn.getBoundingClientRect();
+  const noRect = noBtn.getBoundingClientRect();
+
+  if(yesRect.right >= noRect.left){ 
+    const overlap = yesRect.right - noRect.left;
+    noBtn.style.left = `${parseFloat(noBtn.style.left || 55) + overlap/12}%`;
+  }
+
+  if(clickCount>=7){
+    noBtn.style.opacity="0";
+    noBtn.style.pointerEvents="none";
+    showScreen("screen3");
+  }
+});
+
+// Кнопка "Так" завжди клікабельна
+yesBtn.addEventListener("click", ()=>{
+  showScreen("screen3");
+});
+
+// Переход на екран вибору
+function nextOptions(){ showScreen("screen4"); }
+
+// Анімація кнопок на екрані 4 + асинхронно
+document.querySelectorAll('.option').forEach((option,index)=>{
+  let imgs = option.dataset.images.split(',');
+  let idx = 0;
+  setInterval(()=>{
+    idx = (idx+1)%imgs.length;
+    option.querySelector('img').src = imgs[idx];
+  },1100 + index*150);
+});
+
+// Вибір кнопки → фінал
+function chosen(el){ showScreen("screen5"); }
+</script>
+</body>
+</html>
